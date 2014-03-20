@@ -42,11 +42,13 @@ public class JCacheRegionFactory implements RegionFactory {
 
 	private final AtomicBoolean started = new AtomicBoolean( false );
 	private volatile CacheManager cacheManager;
+	private Settings settings;
 
 	@Override
 	public void start(final Settings settings, final Properties properties) throws CacheException {
 		if ( started.compareAndSet( false, true ) ) {
 			synchronized ( this ) {
+				this.settings = settings;
 				try {
 					final CachingProvider cachingProvider;
 					final String provider = getProp( properties, PROVIDER );
@@ -117,21 +119,21 @@ public class JCacheRegionFactory implements RegionFactory {
 	public EntityRegion buildEntityRegion(final String regionName, final Properties properties, final CacheDataDescription metadata)
 			throws CacheException {
 		final Cache<Object, Object> cache = getOrCreateCache( regionName, properties, metadata );
-		return new JCacheEntityRegion( cache );
+		return new JCacheEntityRegion( cache, metadata, settings );
 	}
 
 	@Override
 	public NaturalIdRegion buildNaturalIdRegion(final String regionName, final Properties properties, final CacheDataDescription metadata)
 			throws CacheException {
 		final Cache<Object, Object> cache = getOrCreateCache( regionName, properties, metadata );
-		return new JCacheNaturalIdRegion( cache );
+		return new JCacheNaturalIdRegion( cache, metadata, settings );
 	}
 
 	@Override
 	public CollectionRegion buildCollectionRegion(final String regionName, final Properties properties, final CacheDataDescription metadata)
 			throws CacheException {
 		final Cache<Object, Object> cache = getOrCreateCache( regionName, properties, metadata );
-		return new JCacheCollectionRegion( cache );
+		return new JCacheCollectionRegion( cache, metadata, settings );
 	}
 
 	@Override

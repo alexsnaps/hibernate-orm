@@ -15,6 +15,9 @@ public class JCacheRegion implements Region {
 	protected final Cache<Object, Object> cache;
 
 	public JCacheRegion(Cache<Object, Object> cache) {
+		if(cache == null) {
+			throw new NullPointerException("JCacheRegion requires a Cache!");
+		}
 		this.cache = cache;
 	}
 
