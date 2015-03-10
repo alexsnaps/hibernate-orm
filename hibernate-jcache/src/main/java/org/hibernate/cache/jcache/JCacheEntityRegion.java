@@ -27,7 +27,7 @@ package org.hibernate.cache.jcache;
 import javax.cache.Cache;
 
 import org.hibernate.cache.CacheException;
-import org.hibernate.cache.jcache.access.NonstrictEntityRegionAccessStrategy;
+import org.hibernate.cache.jcache.access.NonStrictEntityRegionAccessStrategy;
 import org.hibernate.cache.jcache.access.ReadOnlyEntityRegionAccessStrategy;
 import org.hibernate.cache.jcache.access.ReadWriteEntityRegionAccessStrategy;
 import org.hibernate.cache.spi.CacheDataDescription;
@@ -52,7 +52,7 @@ public class JCacheEntityRegion extends JCacheTransactionalDataRegion implements
 			case READ_ONLY:
 				return new ReadOnlyEntityRegionAccessStrategy( this );
 			case NONSTRICT_READ_WRITE:
-				return new NonstrictEntityRegionAccessStrategy( this );
+				return new NonStrictEntityRegionAccessStrategy( this );
 			case READ_WRITE:
 				return new ReadWriteEntityRegionAccessStrategy( this );
 			case TRANSACTIONAL:

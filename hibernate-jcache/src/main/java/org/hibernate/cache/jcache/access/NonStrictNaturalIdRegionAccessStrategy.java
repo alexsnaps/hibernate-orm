@@ -1,7 +1,7 @@
 /*
  * Hibernate, Relational Persistence for Idiomatic Java
  *
- * Copyright (c) 2014, Red Hat Inc. or third-party contributors as
+ * Copyright (c) 2015, Red Hat Inc. or third-party contributors as
  * indicated by the @author tags or express copyright attribution
  * statements applied by the authors.  All third-party contributions are
  * distributed under license by Red Hat Inc.
@@ -25,42 +25,39 @@
 package org.hibernate.cache.jcache.access;
 
 import org.hibernate.cache.CacheException;
-import org.hibernate.cache.jcache.JCacheEntityRegion;
-import org.hibernate.cache.spi.access.EntityRegionAccessStrategy;
+import org.hibernate.cache.jcache.JCacheNaturalIdRegion;
+import org.hibernate.cache.spi.access.NaturalIdRegionAccessStrategy;
 import org.hibernate.cache.spi.access.SoftLock;
-
 
 /**
  * @author Alex Snaps
  */
-public class NonStrictEntityRegionAccessStrategy
-		extends JCacheRegionAccessStrategy<JCacheEntityRegion>
-		implements EntityRegionAccessStrategy {
+public class NonStrictNaturalIdRegionAccessStrategy
+		extends JCacheRegionAccessStrategy<JCacheNaturalIdRegion>
+		implements NaturalIdRegionAccessStrategy {
 
-	public NonStrictEntityRegionAccessStrategy(JCacheEntityRegion jCacheEntityRegion) {
-		super( jCacheEntityRegion );
+	public NonStrictNaturalIdRegionAccessStrategy(JCacheNaturalIdRegion jCacheNaturalIdRegion) {
+		super( jCacheNaturalIdRegion );
 	}
 
 	@Override
-	public boolean insert(Object key, Object value, Object version) throws CacheException {
+	public boolean insert(Object key, Object value) throws CacheException {
 		return false;
 	}
 
 	@Override
-	public boolean afterInsert(Object key, Object value, Object version) throws CacheException {
+	public boolean afterInsert(Object key, Object value) throws CacheException {
 		return false;
 	}
 
 	@Override
-	public boolean update(Object key, Object value, Object currentVersion, Object previousVersion)
-			throws CacheException {
+	public boolean update(Object key, Object value) throws CacheException {
 		remove( key );
 		return false;
 	}
 
 	@Override
-	public boolean afterUpdate(Object key, Object value, Object currentVersion, Object previousVersion, SoftLock lock)
-			throws CacheException {
+	public boolean afterUpdate(Object key, Object value, SoftLock lock) throws CacheException {
 		unlockItem( key, lock );
 		return false;
 	}
